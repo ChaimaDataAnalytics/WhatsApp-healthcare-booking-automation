@@ -22,8 +22,8 @@ All booking data is automatically stored in Google Sheets creating a structured 
 
 ## Chatbot Interaction
 
-![Chatbot](images/chatbot-demo.png)
-
+![Chatbot](images/chatbot-demo1.png)
+![Chatbot](images/chatbot-demo2.png)
 ---
 
 ## Dataset Example
