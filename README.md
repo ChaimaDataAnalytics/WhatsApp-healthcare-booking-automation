@@ -37,7 +37,7 @@ The system automatically logs booking data including:
 
 This dataset can later be connected to tools such as Power BI for healthcare analytics.
 
-![Dataset](images/dataset.png)
+![Dataset](images/dataset.jpeg)
 
 ---
 
