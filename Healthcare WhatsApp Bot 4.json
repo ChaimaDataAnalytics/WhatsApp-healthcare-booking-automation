@@ -1,0 +1,1818 @@
+{
+  "name": "Healthcare WhatsApp Bot 4",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ee1a51f6-91e5-41d3-a83e-8289983ecd67",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1808,
+        144
+      ],
+      "id": "ec444b47-2505-43cd-b996-e51a96c4ad99",
+      "name": "Webhook",
+      "webhookId": "ee1a51f6-91e5-41d3-a83e-8289983ecd67"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json[\"query\"][\"hub.challenge\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        592,
+        -432
+      ],
+      "id": "c526e8e3-5b30-42ae-b622-714b17ce6c57",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f42f1ccb-7db8-48c6-8cc7-d138febff345",
+              "name": "phone",
+              "value": "={{$json.body.entry[0].changes[0].value.messages[0].from}}",
+              "type": "string"
+            },
+            {
+              "id": "558a1353-c3ff-4b04-a2db-7bc7aae5c332",
+              "name": "message",
+              "value": "={{$json.body.entry[0].changes[0].value.messages[0].text.body}}",
+              "type": "string"
+            },
+            {
+              "id": "a1413c7b-4ec6-4e93-b3f2-71c65dbb827e",
+              "name": "user_message",
+              "value": "={{$json.body.entry[0].changes[0].value.messages[0].text.body}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1408,
+        144
+      ],
+      "id": "c0a51ba0-a902-447d-ab7e-daa8edd9f40b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE",
+          "mode": "list",
+          "cachedResultName": "Clinic_Bot_Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "phone",
+              "lookupValue": "={{$json.phone.toString()}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1248,
+        240
+      ],
+      "id": "4bec0075-fccd-4e0e-8bc4-0cbb928ea3a5",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KTT4EkxmxtyZtXRN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e025f610-03e1-43ad-84bf-f62aa86bcec0",
+              "leftValue": "={{$json[\"row_number\"]}}",
+              "rightValue": "\"1\"",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1056,
+        144
+      ],
+      "id": "ce85c38d-740e-4bb0-bb1e-e32e8a6bae8d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE",
+          "mode": "list",
+          "cachedResultName": "Clinic_Bot_Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{$node[\"Edit Fields\"].json[\"phone\"]}}",
+            "step": "hello",
+            "department ": "none",
+            "date": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "step",
+              "displayName": "step",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "department ",
+              "displayName": "department ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "appointment ",
+              "displayName": "appointment ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -864,
+        32
+      ],
+      "id": "e62504ec-a5d1-428b-afaf-ef7e15d5cc7c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KTT4EkxmxtyZtXRN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE",
+          "mode": "list",
+          "cachedResultName": "Clinic_Bot_Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{$json[\"phone\"]}}",
+            "step": "choose_department"
+          },
+          "matchingColumns": [
+            "phone"
+          ],
+          "schema": [
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "step",
+              "displayName": "step",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "department ",
+              "displayName": "department ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "appointment ",
+              "displayName": "appointment ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        -384
+      ],
+      "id": "a81ee5ca-f617-4ef1-be14-415bff525fb8",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KTT4EkxmxtyZtXRN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/1024461144083514/messages",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer EAANOwQADCGoBQZBZC2jrqnL2birUPWT7ihk7BtNU2pNCkVzxS9gLd6neVb7wusOetIlpFBGrLhloF6m0wasFKVVqOz7EmKyCaekNZAggeqd0mt8Vq5cmTkAzeZBu6pw0ZCrsmBFrn5Rs2hfDrhZBVVM1B6sKeHpFJT86HAhTaR0lzhFHVZA62ktXmYjrdYRJHbJ1Teytv53YlO2qj4RHtJYCz71I7hbjiROZAuebtY4x7AhqdGJsZAYmEbVMVZC4AmayMlNVYtftl93xVPo1z9ZCyf0HwZDZD\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Welcome to our clinic 👋\\n\\nPlease choose an option:\\n\\n1️⃣ Book an Appointment\\n2️⃣ Medical Consultation\\n3️⃣ Clinic Location\\n4️⃣ Complaints or Suggestions\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -272,
+        -240
+      ],
+      "id": "3e6ccd32-7ee0-4015-aaee-dbae146fd842",
+      "name": "main_menu"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/1024461144083514/messages",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer EAANOwQADCGoBQZBZC2jrqnL2birUPWT7ihk7BtNU2pNCkVzxS9gLd6neVb7wusOetIlpFBGrLhloF6m0wasFKVVqOz7EmKyCaekNZAggeqd0mt8Vq5cmTkAzeZBu6pw0ZCrsmBFrn5Rs2hfDrhZBVVM1B6sKeHpFJT86HAhTaR0lzhFHVZA62ktXmYjrdYRJHbJ1Teytv53YlO2qj4RHtJYCz71I7hbjiROZAuebtY4x7AhqdGJsZAYmEbVMVZC4AmayMlNVYtftl93xVPo1z9ZCyf0HwZDZD\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"={{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Please choose a department:\\n\\n1️⃣ General Medicine\\n2️⃣ Dentistry\\n3️⃣ Dermatology\\n4️⃣ Pediatrics\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        416,
+        -432
+      ],
+      "id": "69e2c38a-51f8-4091-9cec-d8cdf19e2e82",
+      "name": "department"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4117ef01-fd25-46e4-af16-433a075f2ba0",
+                    "leftValue": "={{$json[\"step\"]}}",
+                    "rightValue": "hello",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json[\"step\"]}}",
+                    "rightValue": "main_menu",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1955420e-4b32-4999-956f-257da1acefe3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "56e1bd64-5d7b-40cd-8f39-db7b751c0d41",
+                    "leftValue": "={{$json[\"step\"]}}",
+                    "rightValue": "choose_department",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f7f2af2d-cc31-4aa9-b961-e279334bfd8e",
+                    "leftValue": "={{$json[\"step\"]}}",
+                    "rightValue": "choose_date",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -656,
+        192
+      ],
+      "id": "b14656da-0898-410b-bd61-54a013bb5e98",
+      "name": "step"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ab2e3a80-82f9-4314-ba2e-4588fc548c38"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "68fe1efa-6d85-414e-bb3b-076ac8505924",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e48ad430-e536-4f4d-8c0f-622ffb254638",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "fca15c4e-9d0f-43c6-9f7f-a91a99245d93",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        -32
+      ],
+      "id": "f3911013-7de8-42cd-9233-9dfb47d50b9d",
+      "name": "1,2,3,4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/1024461144083514/messages",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer EAANOwQADCGoBQ1GxXKgZBo1z8Gw1nylbqkZBqOEQIsZB6V8VUt8WdxZBnLV2lkZBK4NunJQVYSq0yaeZBZAnEDLzUgfjQrMk8JFf0nuvATwiwzbehKBBZBb1PNaYJebj3LJIbk3fdQAOIuiW1HcZAY9qfbZBNY7uYBTZA0WQ7ruSOFprMNpZAmsIvd93UqiZAusClMmz6ZBE3zR4vsL2I8bxZCHAGKw8qDYD5WAzm3EVstD6fskzzVecZBglgDMGOMCqYFaret1ab88SavTvBvd1O6CjlJbV\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"={{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Please describe your medical concern.\\n\\nOur medical team will respond shortly.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        416,
+        -240
+      ],
+      "id": "a91cff54-a83d-4d6e-82eb-a8e2f8277988",
+      "name": "medical_consultation"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/1024461144083514/messages",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer EAANOwQADCGoBQ1GxXKgZBo1z8Gw1nylbqkZBqOEQIsZB6V8VUt8WdxZBnLV2lkZBK4NunJQVYSq0yaeZBZAnEDLzUgfjQrMk8JFf0nuvATwiwzbehKBBZBb1PNaYJebj3LJIbk3fdQAOIuiW1HcZAY9qfbZBNY7uYBTZA0WQ7ruSOFprMNpZAmsIvd93UqiZAusClMmz6ZBE3zR4vsL2I8bxZCHAGKw8qDYD5WAzm3EVstD6fskzzVecZBglgDMGOMCqYFaret1ab88SavTvBvd1O6CjlJbV\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"={{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Our clinic location:\\n\\n📍 King Abdullah Road, Jeddah\\n\\nhttps://maps.google.com\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        416,
+        -64
+      ],
+      "id": "504ff2f6-4078-4f33-aa84-c6fad75ed3e7",
+      "name": "clinic location"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/1024461144083514/messages",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer EAANOwQADCGoBQ1GxXKgZBo1z8Gw1nylbqkZBqOEQIsZB6V8VUt8WdxZBnLV2lkZBK4NunJQVYSq0yaeZBZAnEDLzUgfjQrMk8JFf0nuvATwiwzbehKBBZBb1PNaYJebj3LJIbk3fdQAOIuiW1HcZAY9qfbZBNY7uYBTZA0WQ7ruSOFprMNpZAmsIvd93UqiZAusClMmz6ZBE3zR4vsL2I8bxZCHAGKw8qDYD5WAzm3EVstD6fskzzVecZBglgDMGOMCqYFaret1ab88SavTvBvd1O6CjlJbV\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"={{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"For complaints or suggestions please contact our customer service team:\\n\\nhttps://wa.me/966500000000\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        416,
+        112
+      ],
+      "id": "50c4f462-d249-4afb-8375-e4cbfed86bac",
+      "name": "complaints or suggestions"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fbc62b8a-fb94-4392-97ad-25aab5517b69"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e71d849d-a804-446b-b0f7-68a6b1cce963",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "82efd174-fad5-404f-9983-388c5aa4b41d",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6cf3ba18-c787-4da3-b9c8-73f30aecd353",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        256
+      ],
+      "id": "1f90e003-65ea-424c-aea8-04975c3d0f79",
+      "name": "department_choice"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6a77cbb7-4c04-425c-85ca-cc14dc6ce86a",
+              "name": "department",
+              "value": "={{ {1:\"General Medicine\",2:\"Dentistry\",3:\"Dermatology\",4:\"Pediatrics\"}[$json.user_message] }}",
+              "type": "string"
+            },
+            {
+              "id": "6b37ae70-c907-4949-9943-8375e1c33cc5",
+              "name": "step",
+              "value": "choose_department",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -256,
+        304
+      ],
+      "id": "30e6f69d-13b4-4faa-ad2d-763eac39e17e",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE",
+          "mode": "list",
+          "cachedResultName": "Clinic_Bot_Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "step": "choose_date",
+            "phone": "={{$json[\"phone\"]}}",
+            "department ": "={{$json.department}}",
+            "appointment ": "Done!"
+          },
+          "matchingColumns": [
+            "phone"
+          ],
+          "schema": [
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "step",
+              "displayName": "step",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "department ",
+              "displayName": "department ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "appointment ",
+              "displayName": "appointment ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -80,
+        304
+      ],
+      "id": "10f6e253-be9f-491f-94e8-66962876a359",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KTT4EkxmxtyZtXRN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/1024461144083514/messages",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer EAANOwQADCGoBQZBZC2jrqnL2birUPWT7ihk7BtNU2pNCkVzxS9gLd6neVb7wusOetIlpFBGrLhloF6m0wasFKVVqOz7EmKyCaekNZAggeqd0mt8Vq5cmTkAzeZBu6pw0ZCrsmBFrn5Rs2hfDrhZBVVM1B6sKeHpFJT86HAhTaR0lzhFHVZA62ktXmYjrdYRJHbJ1Teytv53YlO2qj4RHtJYCz71I7hbjiROZAuebtY4x7AhqdGJsZAYmEbVMVZC4AmayMlNVYtftl93xVPo1z9ZCyf0HwZDZD\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Please choose a preferred date:\\n\\n1️⃣ Tomorrow\\n2️⃣ Next available appointment\\n3️⃣ Choose another date\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        176,
+        320
+      ],
+      "id": "61220ff4-168a-43ce-8049-e51a7ee8443f",
+      "name": "date"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f33ffe0b-03e6-4558-b8d3-0eb8c4d28362",
+              "leftValue": "={{$json.body.entry[0].changes[0].value.messages[0].text.body}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1648,
+        160
+      ],
+      "id": "a9663d38-6206-4453-a4bf-a5edfec1f217",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json[\"query\"][\"hub.challenge\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        144,
+        576
+      ],
+      "id": "fd68df36-761e-468d-afda-142cc8dfda92",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6a77cbb7-4c04-425c-85ca-cc14dc6ce86a",
+              "name": "appointment",
+              "value": "={{ { 1: \"Tomorrow\", 2: \"Next available appointment\", 3: \"Choose another date\" }[$json.user_message] }}",
+              "type": "string"
+            },
+            {
+              "id": "6b37ae70-c907-4949-9943-8375e1c33cc5",
+              "name": "step",
+              "value": "choose_date",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -256,
+        560
+      ],
+      "id": "9a9dd7d3-a887-49c3-886d-d7b36dbdf5c5",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json[\"query\"][\"hub.challenge\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        384,
+        336
+      ],
+      "id": "676600c1-9c48-4411-bfe3-df539fe2770b",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fbc62b8a-fb94-4392-97ad-25aab5517b69"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e71d849d-a804-446b-b0f7-68a6b1cce963",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "82efd174-fad5-404f-9983-388c5aa4b41d",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        544
+      ],
+      "id": "6b7971f3-b62e-4a6d-859e-832e09756bfd",
+      "name": "date1"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json[\"query\"][\"hub.challenge\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -1472,
+        400
+      ],
+      "id": "9b949ac3-deca-4ec2-8170-f79c8f1b2a3d",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4e552ee9-dcde-42dd-9e88-d9fd7417e2b7",
+              "name": "user_message",
+              "value": "={{$node[\"Edit Fields\"].json[\"user_message\"]}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -816,
+        272
+      ],
+      "id": "6656bf6d-7d8a-47f0-8363-d7fb1609a476",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fbc62b8a-fb94-4392-97ad-25aab5517b69"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e71d849d-a804-446b-b0f7-68a6b1cce963",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "82efd174-fad5-404f-9983-388c5aa4b41d",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "952357f5-f235-474a-8e8c-42c3dbefa0d7",
+                    "leftValue": "={{$json[\"user_message\"]}}",
+                    "rightValue": "4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "={{$json[\"user_message\"]}}"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -464,
+        -32
+      ],
+      "id": "008f5a1c-9e6f-4886-9855-8605ebeba098",
+      "name": "main_menu1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6a77cbb7-4c04-425c-85ca-cc14dc6ce86a",
+              "name": "department",
+              "value": "={{ {1:\"Book an Appointment\",2:\"Medical Consultation\",3:\"Clinic Location\",4:\"Complaints or Suggestions\"}[$json.user_message] }}",
+              "type": "string"
+            },
+            {
+              "id": "6b37ae70-c907-4949-9943-8375e1c33cc5",
+              "name": "step",
+              "value": "main_menu",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "ae11b762-c5d6-44f5-aa57-25b67e968649",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE",
+          "mode": "list",
+          "cachedResultName": "Clinic_Bot_Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_Q789pqpPdTjqlv9x0smqNoa_-EmB-TozlPzGJe9QE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{$json[\"phone\"]}}",
+            "step": "main_menu"
+          },
+          "matchingColumns": [
+            "phone"
+          ],
+          "schema": [
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "step",
+              "displayName": "step",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "department ",
+              "displayName": "department ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "appointment ",
+              "displayName": "appointment ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -464,
+        -240
+      ],
+      "id": "8be21d07-369e-4554-b1e0-5cfa1e96287b",
+      "name": "Update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KTT4EkxmxtyZtXRN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json[\"query\"][\"hub.challenge\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -112,
+        -240
+      ],
+      "id": "67e78ffb-02f5-4ad0-9bef-1b5f5ed9bcf8",
+      "name": "Respond to Webhook4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/1024461144083514/messages",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer EAANOwQADCGoBQZBZC2jrqnL2birUPWT7ihk7BtNU2pNCkVzxS9gLd6neVb7wusOetIlpFBGrLhloF6m0wasFKVVqOz7EmKyCaekNZAggeqd0mt8Vq5cmTkAzeZBu6pw0ZCrsmBFrn5Rs2hfDrhZBVVM1B6sKeHpFJT86HAhTaR0lzhFHVZA62ktXmYjrdYRJHbJ1Teytv53YlO2qj4RHtJYCz71I7hbjiROZAuebtY4x7AhqdGJsZAYmEbVMVZC4AmayMlNVYtftl93xVPo1z9ZCyf0HwZDZD\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{$json.phone}}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"✅ Your appointment for {{$json.department}}  has been confirmed.\\n\\nSee you at the clinic!\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -64,
+        560
+      ],
+      "id": "2990bb1f-c260-48a8-b5d6-9159f93bbebb",
+      "name": "date2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "department",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "main_menu": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "step": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "main_menu1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "department_choice",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "date1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1,2,3,4": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "medical_consultation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "clinic location",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "complaints or suggestions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "department_choice": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "department": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "date": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "date2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "date1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "step",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "main_menu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "main_menu1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "1,2,3,4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "date2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6ed80355-1b7f-4008-8f34-1b0b9684313b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d96ecf27bc527e0764e69f644d10dcfb63213ea704b54ad212ce35459b05dfbb"
+  },
+  "id": "yioYZPNWI8GRzX1H",
+  "tags": []
+}
